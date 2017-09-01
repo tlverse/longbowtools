@@ -1,0 +1,31 @@
+{
+	"data": {
+		"uri": "https://raw.githubusercontent.com/BerkeleyBiostats/tlapp/30821fe37d9fdb2cb645ad2c42f63f1c1644d7c4/cpp.csv",
+		"type": "csv",
+		"nodes": {
+			"Y": "haz",
+			"A": "parity",
+			"W": ["apgar1", "apgar5", "gagebrth", "mage", "meducyrs", "sexn"]
+		}
+	},
+	"params": {
+		"learners": {
+			"glm_learner": {
+				"learner": "Lrnr_glm_fast"
+			},
+			
+			"sl_glmnet_learner": {
+				"learner": "Lrnr_pkg_SuperLearner",
+				"params": {
+					"SL_wrapper":"SL.glmnet"
+				}
+			}
+			
+		},
+		
+		"metalearner": {
+			"learner": "Lrnr_nnls"
+		}
+	},
+	"output_dir": "~/test_output"
+}
