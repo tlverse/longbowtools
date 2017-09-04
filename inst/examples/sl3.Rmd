@@ -80,7 +80,7 @@ kable(coeftab)
 ```
 
 ### Coef plot
-```{r coef plot, echo=FALSE, fig.height=2, fig.width=4}
+```{r coef_plot, echo=FALSE, fig.height=2, fig.width=4}
 library(ggplot2)
 coefdf <- as.data.frame(coeftab)
 coefdf$Learner <- learner_names
@@ -88,7 +88,7 @@ ggplot(coefdf,aes(y=Learner, x=Coef))+geom_point()+theme_bw()
 ```
 
 ### Coef text
-```{r coef text, echo=FALSE}
+```{r coef_text, echo=FALSE}
 print(coeftab)
 ```
 
@@ -96,7 +96,7 @@ print(coeftab)
 
 Nothing to see here
 
-```{r coef file, echo=FALSE}
+```{r coef_file, echo=FALSE}
 csv_file <- file.path(tlparams$output_dir, "coef.csv")
 write.csv(coeftab,csv_file)
 

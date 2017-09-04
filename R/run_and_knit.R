@@ -1,4 +1,7 @@
-#' run_and_knit
+#' Run script with parameters as specified and generate markdown output
+#' @param Rmd_file the script to run
+#' @param tlparams a ScriptParams object specifying the relevant options
+#' @param run_pandoc boolean, indicating whether to run pandoc on the markdown output
 #' @export
 #' @importFrom knitr knit
 run_and_knit <- function(Rmd_file, tlparams, run_pandoc=FALSE){

@@ -2,7 +2,7 @@ library(tltools)
 library(testthat)
 context("basic test")
 
-load_all()
+# load_all()
 sample_input_file <- fpath <- system.file("extdata", "sample_input.json", package="tltools")
 
 tlparams <- ScriptParams$new(sample_input_file)

@@ -1,2 +1,22 @@
+^\.git
+^\.git/*
+^\.gitignore$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^README\.md
+
+# Automated testing files.
+^\.travis\.yml$
+^appveyor\.yml$
+^codecov\.yml$
+  
+# other miscellaneous non-CRAN files
+^docs$
+^README\.Rmd$
+^README\.html$
+^README-.*\.png$
+^cran-comments.md$
+^CONTRIBUTING\.md$
+^refs.bib$
+^Makefile$
+^LICENSE$

@@ -2,10 +2,17 @@
 % Please edit documentation in R/run_and_knit.R
 \name{run_and_knit}
 \alias{run_and_knit}
-\title{run_and_knit}
+\title{Run script with parameters as specified and generate markdown output}
 \usage{
-run_and_knit(Rmd_file, tlparams)
+run_and_knit(Rmd_file, tlparams, run_pandoc = FALSE)
+}
+\arguments{
+\item{Rmd_file}{the script to run}
+
+\item{tlparams}{a ScriptParams object specifying the relevant options}
+
+\item{run_pandoc}{boolean, indicating whether to run pandoc on the markdown output}
 }
 \description{
-run_and_knit
+Run script with parameters as specified and generate markdown output
 }
