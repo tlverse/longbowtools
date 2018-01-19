@@ -6,7 +6,8 @@ Description: tltools provides glue for authoring scripts to be run via the TL ap
 Depends: R6,
          data.table,
          jsonlite,
-         knitr
+         knitr,
+         rmarkdown
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
