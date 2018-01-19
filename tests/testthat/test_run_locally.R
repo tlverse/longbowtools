@@ -3,7 +3,9 @@ library(testthat)
 context("run and knit")
 
 sample_input_file <- fpath <- system.file("extdata", "sample_input.json", package="tltools")
-Rmd_file <- fpath <- system.file("examples", "sl3.Rmd", package="tltools")
-
-
-result <- run_locally(Rmd_file, sample_input_file)
+rmd_filename <- fpath <- system.file("examples", "example_template.Rmd", package="tltools")
+temp_sample_json <- tempfile()
+inputs_json_from_rmd(rmd_filename, temp_sample_json)
+result <- run_internal(rmd_filename, temp_sample_json)
+result2 <- run_locally(rmd_filename, temp_sample_json, open_result = FALSE)
+# result2 <- run_locally(rmd_filename, temp_sample_json, open_result = TRUE)

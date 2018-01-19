@@ -5,6 +5,8 @@
 #' @export
 #' @importFrom rmarkdown render
 #' @importFrom knitr pandoc
+#' @importFrom jsonlite fromJSON
+#' @rdname run_analysis
 run_internal <- function(rmd_filename, params_filename, output_directory = tempdir()){
   args = commandArgs(trailingOnly=TRUE)
   
@@ -14,17 +16,24 @@ run_internal <- function(rmd_filename, params_filename, output_directory = tempd
   
   owd <- setwd(output_directory)
   
-  try({
+  pandoc_filename <- NULL
+  result <- try({
     rmarkdown::render(rmd_filename, output_file=output_filename, params=params_)
     pandoc_filename <- pandoc(output_filename)
   })
   setwd(owd)
-  
+  if(inherits(result, "try-error")){
+    stop(result)
+  }
   return(pandoc_filename)
 }  
 
-run_locally <- function(rmd_filename, params_filename, open = TRUE){
+#' @rdname run_analysis
+#' @param open_result Open compiled report in new window (Currently OSX only)
+#' @export
+run_locally <- function(rmd_filename, params_filename, open_result = TRUE){
   pandoc_filename <- run_internal(rmd_filename, params_filename)
-  system(sprintf("open %s", pandoc_filename))
-  
+  if(open_result){
+    system(sprintf("open %s", pandoc_filename))
+  }
 }  
