@@ -3,6 +3,7 @@ title: "Sample TL App script"
 author: "Jeremy Coyle"
 date: "9/1/2017"
 output: html_document
+required_packages:  ['knitr', 'github://jeremyrcoyle/delayed@reduce-r-version', 'igraph@1.0.1']
 params:
   data: 
     value: 

@@ -37,3 +37,34 @@ run_locally <- function(rmd_filename, params_filename, open_result = TRUE){
     system(sprintf("open %s", pandoc_filename))
   }
 }  
+
+
+#' @rdname run_on_cluster
+#' @export
+#' @importFrom jsonlite fromJSON toJSON
+#' @importFrom rmarkdown yaml_front_matter
+#' @importFrom httr POST add_headers
+run_on_cluster <- function(rmd_filename, params_filename, open_result = TRUE){
+  submit_url <-  sprintf("%s/submit_job_token/",getOption("tltools.tlapp.base.url"))
+  yaml_header <- yaml_front_matter(rmd_filename)
+  r_packages <- yaml_header$required_packages
+  payload <- list(ghap_credentials = ghap_credentials(),
+                  inputs = fromJSON(params_filename),
+                  backend = "ghap",
+                  code = paste(readLines(rmd_filename), collapse="\n"),
+                  r_packages = r_packages)
+  payload_json <- toJSON(payload, auto_unbox = TRUE)
+  headers <- add_headers(Authorization=tlapp_token(),
+                         `Content-Type`="application/json")
+  response <- POST(submit_url, body=payload_json, headers)
+  if(response$status_code!=200){
+    stop("Something went wrong with run_on_cluster. Status Code:", response$status_code)
+  }
+  
+  
+  
+  if(open_result){
+    job_url <- content(response)$results_url
+    system(sprintf("open %s", job_url))
+  }
+}  
