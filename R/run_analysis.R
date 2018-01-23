@@ -16,7 +16,7 @@ run_internal <- function(rmd_filename, params_filename, output_directory = tempd
   owd <- setwd(output_directory)
   
   result <- try({
-    rmarkdown::render(rmd_filename, html_document(), output_file=pandoc_filename, params=params_)
+    rmarkdown::render(rmd_filename, output_file=pandoc_filename, params=params_)
   })
   setwd(owd)
   if(inherits(result, "try-error")){
