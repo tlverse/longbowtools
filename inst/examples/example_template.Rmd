@@ -38,3 +38,4 @@ print(nodes)
 print(tl_params)
 ```
 
+This is math: $y=x^2$

@@ -3,23 +3,20 @@
 #' @param params_filename a json file specifying the parameters to use
 #' @param output_directory a folder to work in
 #' @export
-#' @importFrom rmarkdown render
-#' @importFrom knitr pandoc
+#' @importFrom rmarkdown render pandoc_convert
 #' @importFrom jsonlite fromJSON
 #' @rdname run_analysis
 run_internal <- function(rmd_filename, params_filename, output_directory = tempdir()){
   args = commandArgs(trailingOnly=TRUE)
   
-  output_filename <- file.path(output_directory, "REPORT.md")
-  
+  md_filename <- file.path(output_directory, "REPORT.md")
+  pandoc_filename <- file.path(output_directory, "REPORT.html")
   params_ <- fromJSON(params_filename)
   
   owd <- setwd(output_directory)
   
-  pandoc_filename <- NULL
   result <- try({
-    rmarkdown::render(rmd_filename, output_file=output_filename, params=params_)
-    pandoc_filename <- pandoc(output_filename)
+    rmarkdown::render(rmd_filename, html_document(), output_file=pandoc_filename, params=params_)
   })
   setwd(owd)
   if(inherits(result, "try-error")){
@@ -39,7 +36,7 @@ run_locally <- function(rmd_filename, params_filename, open_result = TRUE){
 }  
 
 
-#' @rdname run_on_cluster
+#' @rdname run_analysis
 #' @export
 #' @importFrom jsonlite fromJSON toJSON
 #' @importFrom rmarkdown yaml_front_matter

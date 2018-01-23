@@ -1,15 +1,16 @@
-#' Generate sample inputs.json object using defaults specified in Rmd file
+
+#' Generate sample params object using defaults specified in Rmd file
 #' 
-#' can be used to create an inputs.json file that can then be modified with other paramter values
+#' Can also be used to create an inputs.json file that can then be modified with other paramter values
 #' 
 #' @param rmd_filename the analysis template to use
-#' @param save_as the filename to save the resulting inputs.json to
-#' @return the raw json text
+#' @param save_as the json filename to save the resulting params to
+#' @return the params object
 #' 
 #' @export
 #' @importFrom knitr knit_params
 #' @importFrom jsonlite toJSON
-inputs_json_from_rmd <- function(rmd_filename, save_as=NULL){
+params_from_rmd <- function(rmd_filename, save_as=NULL){
   lines <- readLines(rmd_filename, warn = FALSE)
   params_raw <- knit_params(lines)
   
@@ -25,15 +26,17 @@ inputs_json_from_rmd <- function(rmd_filename, save_as=NULL){
   names(script_params) <- names(script_params_raw)
   params$script_params <- script_params
   
-  inputs_json <- toJSON(params)
+  
   
   if(!is.null(save_as)){
-    writeLines(inputs_json, save_as)
+    params_json <- toJSON(params)
+    writeLines(params_json, save_as)
   }
   
   
-  return(inputs_json)  
+  return(params)  
 }
+
 
 #' Script helpers
 #' 
