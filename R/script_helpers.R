@@ -49,8 +49,8 @@ get_tl_data <- function(params_object = NULL){
   if(is.null(params_object)){
     params_object <- get("params", envir=parent.frame())
   }
-  dataset_uri <- params_object$data$dataset_uri
-  fread(dataset_uri)
+  uri <- params_object$data$uri
+  fread(uri)
 }
 
 #' @rdname script_helpers
