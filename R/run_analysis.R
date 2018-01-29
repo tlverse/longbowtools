@@ -26,7 +26,7 @@ run_internal <- function(rmd_filename, params_filename, output_directory = tempd
 }  
 
 #' @rdname run_analysis
-#' @param open_result Open compiled report in new window (Currently OSX only)
+#' @param open_result Open compiled report in new window
 #' @importFrom utils browseURL
 #' @export
 run_locally <- function(rmd_filename, params_filename, open_result = TRUE){
@@ -64,6 +64,6 @@ run_on_cluster <- function(rmd_filename, params_filename, open_result = TRUE){
   
   if(open_result){
     job_url <- content(response)$results_url
-    browseURL(joburl)
+    browseURL(job_url)
   }
 }  
