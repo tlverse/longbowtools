@@ -12,7 +12,7 @@ run_internal <- function(rmd_filename, params_filename, output_directory = tempd
   md_filename <- file.path(output_directory, "REPORT.md")
   pandoc_filename <- file.path(output_directory, "REPORT.html")
   params_ <- fromJSON(params_filename)
-  
+  params_$output_directory <- output_directory
   owd <- setwd(output_directory)
   
   result <- try({

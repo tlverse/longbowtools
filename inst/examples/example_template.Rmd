@@ -21,6 +21,8 @@ params:
       threshold:
         input: 'checkbox'
         value: TRUE
+  output_directory:
+    value: ""
 ---
 
 ```{r setup, include=FALSE}
