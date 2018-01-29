@@ -27,11 +27,12 @@ run_internal <- function(rmd_filename, params_filename, output_directory = tempd
 
 #' @rdname run_analysis
 #' @param open_result Open compiled report in new window (Currently OSX only)
+#' @importFrom utils browseURL
 #' @export
 run_locally <- function(rmd_filename, params_filename, open_result = TRUE){
   pandoc_filename <- run_internal(rmd_filename, params_filename)
   if(open_result){
-    system(sprintf("open %s", pandoc_filename))
+    browseURL(pandoc_filename)
   }
 }  
 
@@ -41,6 +42,7 @@ run_locally <- function(rmd_filename, params_filename, open_result = TRUE){
 #' @importFrom jsonlite fromJSON toJSON
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom httr POST add_headers
+#' @importFrom utils browseURL
 run_on_cluster <- function(rmd_filename, params_filename, open_result = TRUE){
   submit_url <-  sprintf("%s/submit_job_token/",getOption("tltools.tlapp.base.url"))
   yaml_header <- yaml_front_matter(rmd_filename)
@@ -62,6 +64,6 @@ run_on_cluster <- function(rmd_filename, params_filename, open_result = TRUE){
   
   if(open_result){
     job_url <- content(response)$results_url
-    system(sprintf("open %s", job_url))
+    browseURL(joburl)
   }
 }  

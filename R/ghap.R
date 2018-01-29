@@ -27,8 +27,8 @@ ghap_credentials <- function(){
 
 #' Get tlapp token provided to configure_ghap
 #' @export
-tlapp_token = function(){
-  tlapp_token = getOption("tltools.tlapp.token")
+tlapp_token <- function(){
+  tlapp_token <- getOption("tltools.tlapp.token")
   if(is.null(tlapp_token)){
     stop("Set tlapp token using configure_ghap()")
   }
