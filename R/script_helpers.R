@@ -70,5 +70,20 @@ get_tl_params <- function(params_object = NULL){
     params_object <- get("params", envir=parent.frame())
   }
   
-  params_object$script_params
+  script_params <- params_object$script_params
+  # in rstudio these get passed in from YAML not as their value, 
+  # but as the whole object, so subset value if that's what we have
+  values <- lapply(script_params, function(script_param){
+    if(is.list(script_param)){
+      return(script_param$value)
+    } else {
+      return(NULL)
+    }
+  })
+
+  if(any(sapply(values,is.null))){
+    return(script_params)
+  } else {
+    return(values)
+  }
 }
