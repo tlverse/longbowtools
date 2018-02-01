@@ -19,7 +19,7 @@ run_on_cluster(rmd_filename, params_filename, open_result = TRUE)
 
 \item{output_directory}{a folder to work in}
 
-\item{open_result}{Open compiled report in new window (Currently OSX only)}
+\item{open_result}{Open compiled report in new window}
 }
 \description{
 Run script with parameters as specified and generate markdown output

@@ -9,7 +9,7 @@
     "tltools.ghap.password" = NULL,
     "tltools.ghap.ip" = NULL,
     "tltools.tlapp.token" = NULL,
-    "tltools.tlapp.base.url" = "https://tl-app-rvit.herokuapp.com")
+    "tltools.tlapp.base.url" = "https://www.longbowapp.com")
   # for (i in setdiff(names(opts),names(options()))) {
   #   browser()
   #   eval(parse(text=paste("options(",i,"=",as.character(opts[i]),")",sep="")))

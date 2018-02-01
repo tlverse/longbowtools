@@ -1,15 +1,15 @@
 #' Provide ghap credentials for use with run_on_cluster
 #' 
-#' @param username your GHAP username
-#' @param password your GHAP password
-#' @param ip the ip of your GHAP node
-#' @param tlapp_token an api token for the tlapp
+#' @param json_file the configuration file
+#' @importFrom jsonlite fromJSON
 #' @export
-configure_ghap <- function(username, password, ip, tlapp_token){
-  options(tltools.ghap.username = username, 
-          tltools.ghap.password = password,
-          tltools.ghap.ip = ip,
-          tltools.tlapp.token = tlapp_token)
+configure_ghap <- function(json_file="~/ghap.json"){
+  credentials = fromJSON(json_file)
+  with(credentials,
+       options(tltools.ghap.username = username, 
+               tltools.ghap.password = password,
+               tltools.ghap.ip = ip,
+               tltools.tlapp.token = tlapp_token))
 }
 
 #' Get GHAP credentials provided to configure_ghap

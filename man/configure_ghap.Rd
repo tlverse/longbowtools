@@ -4,16 +4,10 @@
 \alias{configure_ghap}
 \title{Provide ghap credentials for use with run_on_cluster}
 \usage{
-configure_ghap(username, password, ip, tlapp_token)
+configure_ghap(json_file = "~/ghap.json")
 }
 \arguments{
-\item{username}{your GHAP username}
-
-\item{password}{your GHAP password}
-
-\item{ip}{the ip of your GHAP node}
-
-\item{tlapp_token}{an api token for the tlapp}
+\item{json_file}{the configuration file}
 }
 \description{
 Provide ghap credentials for use with run_on_cluster
