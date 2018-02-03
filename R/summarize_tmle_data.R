@@ -14,10 +14,9 @@ infer_variable_types <- function(data){
 #' @export
 #' 
 #' @importFrom skimr skim
-summarize_tmle_data <- function(tmle_task){
-  tmle_data <- tmle_task$data
+summarize_tmle_data <- function(data, node_list){
+  tmle_data <- data[, unlist(node_list), with=FALSE]
   variable_types <- infer_variable_types(tmle_data)
-  
   c1 <- skim(tmle_data, variable_types)
 
   return(c1)
