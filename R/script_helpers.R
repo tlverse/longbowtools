@@ -60,7 +60,11 @@ get_tl_nodes <- function(params_object = NULL){
     params_object <- get("params", envir=parent.frame())
   }
   
-  params_object$nodes
+  nodes <- params_object$nodes
+  
+  #drop exclude list
+  nodes$exclude <- NULL
+  return(nodes)
 }
 
 #' @rdname script_helpers
