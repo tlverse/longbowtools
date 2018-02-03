@@ -9,7 +9,8 @@ Depends: R6,
          knitr,
          rmarkdown,
          httr,
-         utils
+         utils,
+         skimr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -17,3 +18,5 @@ RoxygenNote: 6.0.1
 Suggests: testthat,
           sl3,
           tmle3
+Remotes:
+    github::jeremyrcoyle/skimr@vector_types
