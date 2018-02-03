@@ -10,7 +10,8 @@ Depends: R6,
          rmarkdown,
          httr,
          utils,
-         skimr
+         skimr,
+         stringr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
