@@ -67,3 +67,22 @@ run_on_cluster <- function(rmd_filename, params_filename, open_result = TRUE){
     browseURL(job_url)
   }
 }  
+
+
+#' @export
+publish_template <- function(rmd_filename, open_result = TRUE){
+  submit_url <-  sprintf("%s/templates/",getOption("tltools.tlapp.base.url"))
+  payload <- paste(readLines(rmd_filename), collapse="\n")
+  headers <- add_headers(Authorization=tlapp_token(),
+                         `Content-Type`="application/json")
+  response <- POST(submit_url, body=payload, headers)
+  if(response$status_code!=200){
+    stop("Something went wrong with run_on_cluster. Status Code:", response$status_code)
+  }
+  
+  if(open_result){
+    url <- content(response)$url
+    browseURL(url)
+  }
+  
+}  
