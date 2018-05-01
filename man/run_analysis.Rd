@@ -8,7 +8,8 @@
 \usage{
 run_internal(rmd_filename, params_filename, output_directory = tempdir())
 
-run_locally(rmd_filename, params_filename, open_result = TRUE)
+run_locally(rmd_filename, params_filename, output_directory = tempdir(),
+  open_result = TRUE)
 
 run_on_cluster(rmd_filename, params_filename, open_result = TRUE)
 }

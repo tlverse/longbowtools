@@ -9,28 +9,32 @@
 run_internal <- function(rmd_filename, params_filename, output_directory = tempdir()){
   args = commandArgs(trailingOnly=TRUE)
   
-  md_filename <- file.path(output_directory, "REPORT.md")
-  pandoc_filename <- file.path(output_directory, "REPORT.html")
+  #copy Rmd and params file to output directory
+  working_rmd_filename <- file.path(output_directory, "REPORT.Rmd")
+  file.copy(rmd_filename, working_rmd_filename)
+  
+  inputs_filename <- file.path(output_directory, "inputs.json")
+  file.copy(params_filename, inputs_filename)
+  
+  html_filename <- file.path(output_directory, "REPORT.html")
+  
   params_ <- fromJSON(params_filename)
   params_$output_directory <- output_directory
-  owd <- setwd(output_directory)
+  rmarkdown::render(working_rmd_filename, params=params_, 
+                    output_file=html_filename, output_dir=output_directory,
+                    output_format = html_document(self_contained = TRUE, keep_md = TRUE),
+                    knit_root_dir = output_directory)
+
   
-  result <- try({
-    rmarkdown::render(rmd_filename, output_file=pandoc_filename, params=params_)
-  })
-  setwd(owd)
-  if(inherits(result, "try-error")){
-    stop(result)
-  }
-  return(pandoc_filename)
+  return(html_filename)
 }  
 
 #' @rdname run_analysis
 #' @param open_result Open compiled report in new window
 #' @importFrom utils browseURL
 #' @export
-run_locally <- function(rmd_filename, params_filename, open_result = TRUE){
-  pandoc_filename <- run_internal(rmd_filename, params_filename)
+run_locally <- function(rmd_filename, params_filename, output_directory=tempdir(), open_result = TRUE){
+  pandoc_filename <- run_internal(rmd_filename, params_filename, output_directory=output_directory)
   if(open_result){
     browseURL(pandoc_filename)
   }
@@ -66,6 +70,8 @@ run_on_cluster <- function(rmd_filename, params_filename, open_result = TRUE){
     job_url <- content(response)$results_url
     browseURL(job_url)
   }
+  
+  return(job_url)
 }  
 
 
@@ -86,3 +92,57 @@ publish_template <- function(rmd_filename, open_result = TRUE){
   }
   
 }  
+
+
+#' @export
+get_job_logs <- function(job_id){
+  log_url <-  sprintf("%s/jobs/%s/logs_token/",getOption("tltools.tlapp.base.url"), job_id)
+  headers <- add_headers(Authorization=tlapp_token())
+  response <- GET(log_url, headers)
+  if(response$status_code!=200){
+    stop("Something went wrong with getting the logs. Status Code:", response$status_code)
+  }
+  
+  logs <- content(response,as="parsed")
+  
+  return(logs$logs)
+}
+
+#' @export
+get_job_status <- function(job_id){
+
+  status_url <-  sprintf("%s/jobs/%s/status_token/",getOption("tltools.tlapp.base.url"), job_id)
+  headers <- add_headers(Authorization=tlapp_token())
+  response <- GET(status_url, headers)
+  if(response$status_code!=200){
+    stop("Something went wrong with getting the logs. Status Code:", response$status_code)
+  }
+  
+  status <- content(response,as="parsed")
+  return(status)
+}
+
+#' @importFrom utils download.file untar
+#' importFrom httr GET content
+#' @export
+get_job_output <- function(job_id, download_directory = tempdir()){
+  download_url_url <-  sprintf("%s/jobs/%s/download_url_token/",getOption("tltools.tlapp.base.url"), job_id)
+  headers <- add_headers(Authorization=tlapp_token())
+  response <- GET(download_url_url, headers)
+  if(response$status_code!=200){
+    stop("Something went wrong with getting the downlad_url. Status Code:", response$status_code)
+  }
+  
+  download_url <- content(response,as="parsed")
+  
+  dest_file <- file.path(tempdir(),"output.tar.gz")
+  download.file(download_url, dest_file, quiet=TRUE)
+  files <- untar(dest_file, list = TRUE)
+  untar(dest_file, exdir=download_directory)
+  
+  extracted_folder <- file.path(download_directory, files[[1]])
+  destination_folder <- file.path(download_directory, sprintf("job_results_%s",job_id))
+  file.rename(extracted_folder,destination_folder)
+  
+  return(destination_folder)
+}

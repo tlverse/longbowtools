@@ -2,6 +2,9 @@
 
 export(configure_dataset)
 export(configure_ghap)
+export(get_job_logs)
+export(get_job_output)
+export(get_job_status)
 export(get_tl_data)
 export(get_tl_nodes)
 export(get_tl_params)
