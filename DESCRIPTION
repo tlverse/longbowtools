@@ -1,9 +1,9 @@
-Package: tltools
-Title: Helpers for the Targeted Learning App
+Package: longbowtools
+Title: Longbow Interface in R
 Version: 0.0.0.9000
 Authors@R: person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com", role = c("aut", "cre"))
-Description: tltools provides glue for authoring scripts to be run via the TL app.
-Depends: R6,
+Description: longbowtools provides glue for authoring scripts to be run via the Longbow app.
+Imports:   R6,
          data.table,
          jsonlite,
          knitr,

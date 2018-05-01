@@ -20,7 +20,7 @@ roles_from_node_list <- function(variables, node_list){
 
 #' @export
 #' 
-#' @importFrom skimr skim
+#' @importFrom skimr skim_to_list
 summarize_tmle_data <- function(data, node_list){
   tmle_data <- data[, unlist(node_list), with=FALSE]
   variable_types <- infer_variable_types(tmle_data)

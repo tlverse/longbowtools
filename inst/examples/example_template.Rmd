@@ -1,5 +1,5 @@
 ---
-title: "Sample TL App script"
+title: "Sample Longbow Template"
 author: "Jeremy Coyle"
 date: "9/1/2017"
 output: html_document
@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r params}
-library(tltools)
+library(longbowtools)
 data <- get_tl_data()
 nodes <- get_tl_nodes()
 tl_params <- get_tl_params()

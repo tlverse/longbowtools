@@ -2,7 +2,7 @@
 % Please edit documentation in R/datasets.R
 \name{configure_dataset}
 \alias{configure_dataset}
-\title{configure dataset for use with tlapp}
+\title{configure dataset for use with longbow}
 \usage{
 configure_dataset(dataset_path)
 }
@@ -10,5 +10,5 @@ configure_dataset(dataset_path)
 \item{dataset_path}{path to the datset (for now csv files only)}
 }
 \description{
-configure dataset for use with tlapp
+configure dataset for use with longbow
 }

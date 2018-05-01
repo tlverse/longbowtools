@@ -1,4 +1,4 @@
 library(testthat)
-library(tltools)
+library(longbowtools)
 
-test_check("tltools")
+test_check("longbowtools")

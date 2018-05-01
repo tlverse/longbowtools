@@ -1,9 +1,9 @@
-library(tltools)
+library(longbowtools)
 library(testthat)
 context("run and knit")
 
-sample_input_file <- system.file("extdata", "sample_input.json", package="tltools")
-rmd_filename <- system.file("examples", "example_template.Rmd", package="tltools")
+sample_input_file <- system.file("extdata", "sample_input.json", package="longbowtools")
+rmd_filename <- system.file("examples", "example_template.Rmd", package="longbowtools")
 temp_sample_json <- tempfile()
 params <- params_from_rmd(rmd_filename, temp_sample_json)
 result <- run_internal(rmd_filename, temp_sample_json)
