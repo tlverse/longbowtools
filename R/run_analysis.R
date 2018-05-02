@@ -11,10 +11,10 @@ run_internal <- function(rmd_filename, params_filename, output_directory = tempd
   
   #copy Rmd and params file to output directory
   working_rmd_filename <- file.path(output_directory, "REPORT.Rmd")
-  file.copy(rmd_filename, working_rmd_filename)
+  file.copy(rmd_filename, working_rmd_filename, overwrite = TRUE)
   
   inputs_filename <- file.path(output_directory, "inputs.json")
-  file.copy(params_filename, inputs_filename)
+  file.copy(params_filename, inputs_filename, overwrite = TRUE)
   
   html_filename <- file.path(output_directory, "REPORT.html")
   
