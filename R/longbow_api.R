@@ -22,7 +22,7 @@ run_on_longbow <- function(rmd_filename, params_filename, open_result = TRUE){
   }
   
   job_url <- content(response)$results_url
-  job_id <- gsub(".*/jobs/","",job_url)
+  job_id <- gsub("/","",gsub(".*/jobs/","",job_url))
   if(open_result){
     browseURL(job_url)
   }
