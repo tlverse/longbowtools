@@ -8,9 +8,9 @@ run_on_longbow <- function(rmd_filename, params_filename, open_result = TRUE){
   submit_url <-  sprintf("%s/submit_job_token/",getOption("longbowtools.longbow.base.url"))
   yaml_header <- yaml_front_matter(rmd_filename)
   r_packages <- yaml_header$required_packages
-  payload <- list(cluster_credentials = cluster_credentials(),
+  payload <- list(ghap_credentials = cluster_credentials(),
                   inputs = fromJSON(params_filename),
-                  backend = "cluster",
+                  backend = "ghap",
                   code = paste(readLines(rmd_filename), collapse="\n"),
                   r_packages = r_packages)
   payload_json <- toJSON(payload, auto_unbox = TRUE)

@@ -28,10 +28,10 @@ cluster_credentials <- function(){
 #' Get longbow token provided to configure_cluster
 #' @export
 longbow_token <- function(){
-  longbow_token <- getOption("longbowtools.longbow.token")
-  if(is.null(longbow_token)){
+  token <- getOption("longbowtools.longbow.token")
+  if(is.null(token)){
     stop("Set longbow token using configure_cluster()")
   }
   
-  return(longbow_token)
+  return(token)
 }
