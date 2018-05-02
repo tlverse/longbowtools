@@ -21,14 +21,13 @@ run_on_longbow <- function(rmd_filename, params_filename, open_result = TRUE){
     stop("Something went wrong with run_on_longbow. Status Code:", response$status_code)
   }
   
-  
-  
+  job_url <- content(response)$results_url
+  job_id <- gsub(".*/jobs/","",job_url)
   if(open_result){
-    job_url <- content(response)$results_url
     browseURL(job_url)
   }
   
-  return(job_url)
+  return(job_id)
 }  
 
 #' Publish template to longbow UI
