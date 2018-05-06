@@ -32,7 +32,7 @@ process_batch <- function(rmd_filename, inputs_folder="inputs", results_folder="
   	  }
   	}
   	
-  	cat(sprintf("Downloading results...\n",length(job_ids))) 	
+  	cat(sprintf("Downloading results...\n"))
   	success_job_ids <- job_ids[which(job_statuses=="viewable")]
   	pb <- progress_bar$new(format="[:bar] :percent", total=length(success_job_ids), clear=TRUE)
   	pb$tick(0)
@@ -52,4 +52,9 @@ process_batch <- function(rmd_filename, inputs_folder="inputs", results_folder="
   	    Sys.sleep(5)
   	  }
   	}
+  	
+}
+
+load_from_jobs <- function(jobs_folder){
+  
 }
