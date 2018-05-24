@@ -103,5 +103,9 @@ get_job_output <- function(job_id, download_directory = tempdir()){
   destination_folder <- file.path(download_directory, sprintf("job_results_%s",job_id))
   file.rename(extracted_folder,destination_folder)
   
+  logs <- get_job_logs(job_id)
+  logs_file <- file.path(destination_folder, "logs.txt")
+  writeLines(logs, logs_file)
+  
   return(destination_folder)
 }
