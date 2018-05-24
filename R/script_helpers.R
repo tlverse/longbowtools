@@ -44,14 +44,14 @@ params_from_rmd <- function(rmd_filename, save_as=NULL){
 #' @param params_object the object to use, defaults to the global \code{params} object
 #' @export
 #' 
-#' @importFrom stringr str_extract
+#' @importFrom stringr str_extract str_to_lower
 #' @rdname script_helpers
 get_tl_data <- function(params_object = NULL){
   if(is.null(params_object)){
     params_object <- get("params", envir=parent.frame())
   }
   uri <- params_object$data$uri
-  extension <- str_extract(uri,"\\.([^\\.]+)$")
+  extension <- str_to_lower(str_extract(uri,"\\.([^\\.]+)$"))
   
   if(extension==".csv"){
     data <- fread(uri)
