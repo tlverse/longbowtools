@@ -56,7 +56,7 @@ get_tl_data <- function(params_object = NULL){
   if(extension==".csv"){
     data <- fread(uri)
   } else if(extension==".rdata"){
-    vars <- load(url(uri))
+    vars <- load(file(uri))
     
     #use first object that's a data.frame
     dfs <- sapply(vars,function(var)is.data.frame(get(var)))
