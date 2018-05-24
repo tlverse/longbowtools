@@ -44,13 +44,32 @@ params_from_rmd <- function(rmd_filename, save_as=NULL){
 #' @param params_object the object to use, defaults to the global \code{params} object
 #' @export
 #' 
+#' @importFrom stringr str_extract
 #' @rdname script_helpers
 get_tl_data <- function(params_object = NULL){
   if(is.null(params_object)){
     params_object <- get("params", envir=parent.frame())
   }
   uri <- params_object$data$uri
-  fread(uri)
+  extension <- str_extract(uri,"\\.([^\\.]+)$")
+  
+  if(extension==".csv"){
+    data <- fread(uri)
+  } else if(extension==".rdata"){
+    vars <- load(url(uri))
+    
+    #use first object that's a data.frame
+    dfs <- sapply(vars,function(var)is.data.frame(get(var)))
+    if(length(which(dfs))==0){
+      stop("rdata file does not contain a data frame")
+    }
+    var <- vars[which(dfs)][1]
+    data <- get(var)
+  } else {
+    stop("unrecognized data file extension: ",extension)
+  }
+  
+  return(data)
 }
 
 #' @rdname script_helpers
