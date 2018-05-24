@@ -45,6 +45,7 @@ params_from_rmd <- function(rmd_filename, save_as=NULL){
 #' @export
 #' 
 #' @importFrom stringr str_extract str_to_lower
+#' @importFrom data.table setDT
 #' @rdname script_helpers
 get_tl_data <- function(params_object = NULL){
   if(is.null(params_object)){
@@ -65,6 +66,7 @@ get_tl_data <- function(params_object = NULL){
     }
     var <- vars[which(dfs)][1]
     data <- get(var)
+    setDT(data)
   } else {
     stop("unrecognized data file extension: ",extension)
   }
