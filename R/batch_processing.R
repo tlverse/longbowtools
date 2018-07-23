@@ -1,13 +1,13 @@
 #todo: define batch object to manage some of this
 #' @importFrom progress progress_bar
 #' @export
-submit_batch <- function(rmd_filename, inputs_folder="inputs", results_folder="results"){
+submit_batch <- function(rmd_filename, inputs_folder = "inputs", results_folder = "results", provision = TRUE){
   	inputs_files <- dir(inputs_folder, full.names = TRUE)
   	
   	cat(sprintf("Submitting jobs..."))
   	# submit jobs
   	job_ids <- sapply(inputs_files, function(inputs_file){
-  	  run_on_longbow(rmd_filename, inputs_file, open_result = FALSE)  
+  	  run_on_longbow(rmd_filename, inputs_file, open_result = FALSE, provision = provision)  
   	})
   	save(job_ids, file="job_ids.rdata")
   	

@@ -56,6 +56,9 @@ get_tl_data <- function(params_object = NULL){
   
   if(extension==".csv"){
     data <- fread(uri)
+  } else if(extension==".rds"){
+    data <- readRDS(uri)
+    setDT(data)
   } else if(extension==".rdata"){
     vars <- load(file(uri, "rb"))
     
