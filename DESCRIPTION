@@ -11,7 +11,8 @@ Imports:   R6,
          httr,
          utils,
          skimr,
-         stringr
+         stringr,
+         progress
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

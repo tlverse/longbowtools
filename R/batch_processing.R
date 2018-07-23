@@ -68,5 +68,5 @@ load_batch_results <- function(results_file, results_folder="results"){
     }
   })
   
-  results <- rbindlist(all_results)
+  results <- rbindlist(all_results, fill=TRUE)
 }
