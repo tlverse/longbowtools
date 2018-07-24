@@ -43,10 +43,25 @@ wait_for_batch <- function(job_ids){
 get_batch_results <- function(job_ids, results_folder="results"){
   cat(sprintf("Downloading results...\n"))
   job_statuses <- sapply(job_ids, get_job_status)
-  success_job_ids <- job_ids[which(job_statuses=="viewable")]
-  pb <- progress_bar$new(format="[:bar] :percent", total=length(success_job_ids), clear=TRUE)
+  
+  # find jobs where export failed and reattempt
+  success_job_ids <- job_ids[which(job_statuses=="success")]
+  if(length(success_job_ids)>0){
+    lapply(success_job_ids, force_job_finish)
+    
+    # if jobs are still stuck at "success", report that
+    job_statuses <- sapply(job_ids, get_job_status)
+    success_job_ids <- job_ids[which(job_statuses=="success")]
+    
+    if(length(success_job_ids)>0){
+     message("Export failed for the following jobs: ", paste0(success_job_ids, collapse=", ")) 
+    }
+  }
+  
+  viewable_job_ids <- job_ids[which(job_statuses=="viewable")]
+  pb <- progress_bar$new(format="[:bar] :percent", total=length(viewable_job_ids), clear=TRUE)
   pb$tick(0)
-  for(job_id in success_job_ids){
+  for(job_id in viewable_job_ids){
     get_job_output(job_id, results_folder)
     pb$tick()
   }

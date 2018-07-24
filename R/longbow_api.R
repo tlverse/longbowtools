@@ -113,3 +113,19 @@ get_job_output <- function(job_id, download_directory = tempdir()){
   
   return(destination_folder)
 }
+
+#' Longbow Job API
+#' @param job_id the job_id of the job being requested. Returned by \code{\link{run_on_longbow}}
+#' @export
+force_job_finish <- function(job_id){
+  finish_url <-  sprintf("%s/jobs/%s/finish/",getOption("longbowtools.longbow.base.url"), job_id)
+  headers <- add_headers(Authorization=longbow_token())
+  response <- POST(finish_url, headers, body="{}")
+  if(response$status_code!=200){
+    stop("Something went wrong with getting the logs. Status Code:", response$status_code)
+  }
+  
+  logs <- content(response,as="parsed")
+  
+  return(logs$logs)
+}
