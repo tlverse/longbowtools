@@ -72,17 +72,37 @@ get_job_logs <- function(job_id){
 }
 
 #' @export
-get_job_status <- function(job_id){
-
-  status_url <-  sprintf("%s/jobs/%s/status_token/",getOption("longbowtools.longbow.base.url"), job_id)
-  headers <- add_headers(Authorization=longbow_token())
-  response <- GET(status_url, headers)
-  if(response$status_code!=200){
-    stop("Something went wrong with getting the logs. Status Code:", response$status_code)
+get_job_statuses <- function(job_ids){
+  n_per_page <- 30
+  n_ids <- length(job_ids)
+  n_pages <- ceiling(n_ids/n_per_page)
+  page=1
+  statuses <- c()
+  status_ids <- c()
+  
+  #todo: write/import better pagination code
+  for(page in 1:n_pages){
+    subset <- n_per_page*(page-1)+(1:30)
+    subset <- subset[subset<=n_ids]
+    job_id_subset <- job_ids[subset]
+    job_ids_str <- paste0(job_id_subset, collapse=",")
+    status_url <-  sprintf("%s/jobs/?format=json&ids=%s",getOption("longbowtools.longbow.base.url"), job_ids_str)
+    headers <- add_headers(Authorization=longbow_token())
+    
+    response <- GET(status_url, headers)
+    
+    resp_data <- content(response)
+    page_statuses <- sapply(resp_data$jobs,`[[`,"status")
+    page_status_urls <- sapply(resp_data$jobs,`[[`,"results_url")
+    page_status_ids <- as.numeric(gsub("[^[:digit:]]*","",page_status_urls))
+    
+    statuses <- c(statuses, page_statuses)
+    status_ids <- c(status_ids, page_status_ids)
   }
   
-  status <- content(response,as="parsed")
-  return(status)
+  statuses <- statuses[match(job_ids, status_ids)]
+
+  return(statuses)
 }
 
 #' @importFrom utils download.file untar

@@ -27,7 +27,7 @@ wait_for_batch <- function(job_ids){
   pb$tick(0)
   while(length(jobs_pending)>0){
     pending_statuses <- c("submitted", "running")
-    job_statuses <- sapply(job_ids, get_job_status)
+    job_statuses <- get_job_statuses(job_ids)
     # job_table <- data.table(job_ids = job_ids, inputs_file=inputs_files, status=job_statuses)
     jobs_pending <- job_ids[job_statuses%in%pending_statuses]
     fraction_remaining <- (length(job_ids)-length(jobs_pending))/length(job_ids)
@@ -42,7 +42,7 @@ wait_for_batch <- function(job_ids){
 #' @export
 get_batch_results <- function(job_ids, results_folder="results"){
   cat(sprintf("Downloading results...\n"))
-  job_statuses <- sapply(job_ids, get_job_status)
+  job_statuses <- get_job_statuses(job_ids)
   
   # find jobs where export failed and reattempt
   success_job_ids <- job_ids[which(job_statuses=="success")]
@@ -50,7 +50,7 @@ get_batch_results <- function(job_ids, results_folder="results"){
     lapply(success_job_ids, force_job_finish)
     
     # if jobs are still stuck at "success", report that
-    job_statuses <- sapply(job_ids, get_job_status)
+    job_statuses <- get_job_statuses(job_ids)
     success_job_ids <- job_ids[which(job_statuses=="success")]
     
     if(length(success_job_ids)>0){

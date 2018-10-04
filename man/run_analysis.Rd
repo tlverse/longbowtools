@@ -6,7 +6,8 @@
 \alias{run_locally}
 \title{Run template with parameters as specified and generate markdown output}
 \usage{
-run_on_longbow(rmd_filename, params_filename, open_result = TRUE)
+run_on_longbow(rmd_filename, params_filename, open_result = TRUE,
+  provision = TRUE)
 
 run_internal(rmd_filename, params_filename, output_directory = tempdir())
 
