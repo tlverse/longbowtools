@@ -45,20 +45,20 @@ get_batch_results <- function(job_ids, results_folder="results"){
   job_statuses <- get_job_statuses(job_ids)
   
   # find jobs where export failed and reattempt
-  success_job_ids <- job_ids[which(job_statuses=="success")]
-  if(length(success_job_ids)>0){
-    lapply(success_job_ids, force_job_finish)
+  # success_job_ids <- job_ids[which(job_statuses%in%c("success","executed"))]
+  # if(length(success_job_ids)>0){
+  #   lapply(success_job_ids, force_job_finish)
     
-    # if jobs are still stuck at "success", report that
-    job_statuses <- get_job_statuses(job_ids)
-    success_job_ids <- job_ids[which(job_statuses=="success")]
+  #   # if jobs are still stuck at "success", report that
+  #   job_statuses <- get_job_statuses(job_ids)
+  #   success_job_ids <- job_ids[which(job_statuses%in%c("success","executed"))]
     
-    if(length(success_job_ids)>0){
-     message("Export failed for the following jobs: ", paste0(success_job_ids, collapse=", ")) 
-    }
-  }
+  #   if(length(success_job_ids)>0){
+  #    message("Export failed for the following jobs: ", paste0(success_job_ids, collapse=", ")) 
+  #   }
+  # }
   
-  viewable_job_ids <- job_ids[which(job_statuses=="viewable")]
+  viewable_job_ids <- job_ids[which(job_statuses==c("success"))]
   pb <- progress_bar$new(format="[:bar] :percent", total=length(viewable_job_ids), clear=TRUE)
   pb$tick(0)
   for(job_id in viewable_job_ids){
