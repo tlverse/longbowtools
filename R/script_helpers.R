@@ -52,6 +52,12 @@ get_tl_data <- function(params_object = NULL){
     params_object <- get("params", envir=parent.frame())
   }
   uri <- params_object$data$uri
+  
+  #check if file exists before proceeding
+  if(!file.exists(uri)){
+    stop('File does not exist: ', uri)
+  }
+  
   extension <- str_to_lower(str_extract(uri,"\\.([^\\.]+)$"))
   
   if(extension==".csv"){
@@ -85,6 +91,12 @@ get_tl_nodes <- function(params_object = NULL){
   }
   
   nodes <- params_object$nodes
+  
+  data <- get_tl_data()
+  missing_cols <- setdiff(unlist(nodes), colnames(data))
+  if(length(missing_cols) > 0){
+    stop('Column(s) missing from data: ', missing_cols)
+  }
   
   #drop exclude list
   nodes$exclude <- NULL
