@@ -53,8 +53,8 @@ get_tl_data <- function(params_object = NULL){
   }
   uri <- params_object$data$uri
   
-  #check if file exists before proceeding
-  if(!file.exists(uri)){
+  #check if file exists before proceeding (but not for web urls)
+  if(!(file.exists(uri)||grepl("^http(s)*://",uri))){
     stop('File does not exist: ', uri)
   }
   

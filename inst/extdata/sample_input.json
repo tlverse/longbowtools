@@ -1,1 +1,1 @@
-{"data":{"type":["web"],"dataset_uri":["https://raw.githubusercontent.com/BerkeleyBiostats/tlapp/30821fe37d9fdb2cb645ad2c42f63f1c1644d7c4/cpp.csv"]},"nodes":{"A":["foo","bar"],"W":["baz"]},"script_params":{"sample_size":[200],"threshold":[true]}}
+{"data":{"type":["web"],"uri":["https://raw.githubusercontent.com/HBGD-UCB/longbowRiskFactors/master/inst/sample_data/birthwt_data.csv"]},"nodes":{"A":["parity"],"W":["haz"]},"script_params":{"sample_size":[200],"threshold":[true]}}

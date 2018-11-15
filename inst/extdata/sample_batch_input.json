@@ -1,0 +1,4 @@
+[
+	{"data":{"type":["web"],"uri":["https://raw.githubusercontent.com/HBGD-UCB/longbowRiskFactors/master/inst/sample_data/birthwt_data.csv"]},"nodes":{"A":["parity"],"W":["haz"]},"script_params":{"sample_size":[200],"threshold":[true]}},
+	{"data":{"type":["web"],"uri":["https://raw.githubusercontent.com/HBGD-UCB/longbowRiskFactors/master/inst/sample_data/birthwt_data.csv"]},"nodes":{"A":["parity"],"W":["haz"]},"script_params":{"sample_size":[200],"threshold":[true]}}
+]
