@@ -14,8 +14,9 @@ run_on_longbow <- function(rmd_filename, params_filename, open_result = TRUE, pr
                   code = paste(readLines(rmd_filename), collapse="\n"),
                   r_packages = r_packages)
   
+  payload$skip_provision <- !provision
   if(!provision){
-    payload$r_packages <- NULL
+    
   }
   payload_json <- toJSON(payload, auto_unbox = TRUE)
   headers <- add_headers(Authorization=longbow_token(),
@@ -72,35 +73,21 @@ get_job_logs <- function(job_id){
 }
 
 #' @export
-get_job_statuses <- function(job_ids){
-  n_per_page <- 30
-  n_ids <- length(job_ids)
-  n_pages <- ceiling(n_ids/n_per_page)
-  page=1
-  statuses <- c()
-  status_ids <- c()
-  
-  #todo: write/import better pagination code
-  for(page in 1:n_pages){
-    subset <- n_per_page*(page-1)+(1:30)
-    subset <- subset[subset<=n_ids]
-    job_id_subset <- job_ids[subset]
-    job_ids_str <- paste0(job_id_subset, collapse=",")
-    status_url <-  sprintf("%s/jobs/?format=json&ids=%s",getOption("longbowtools.longbow.base.url"), job_ids_str)
-    headers <- add_headers(Authorization=longbow_token())
+get_job_status <- function(job_id){
+  status_url <-  sprintf("%s/jobs/%s/?format=json",getOption("longbowtools.longbow.base.url"), job_id)
+  headers <- add_headers(Authorization=longbow_token())
     
-    response <- GET(status_url, headers)
-    
-    resp_data <- content(response)
-    page_statuses <- sapply(resp_data$jobs,`[[`,"status")
-    page_status_urls <- sapply(resp_data$jobs,`[[`,"results_url")
-    page_status_ids <- as.numeric(gsub("[^[:digit:]]*","",page_status_urls))
-    
-    statuses <- c(statuses, page_statuses)
-    status_ids <- c(status_ids, page_status_ids)
+  response <- GET(status_url, headers)
+  resp_data <- content(response)
+  if(length(resp_data$jobs)==0){
+    statuses <- resp_data$status
+  } else {
+    # get vector of statuses for batch job
+    statuses <- sapply(resp_data$jobs,`[[`,"status")
+    job_urls <- sapply(resp_data$jobs,`[[`,"results_url")
+    job_ids <- gsub("(/jobs)|(/)","",job_urls)
+    names(statuses) <- job_ids
   }
-  
-  statuses <- statuses[match(job_ids, status_ids)]
 
   return(statuses)
 }
@@ -117,15 +104,26 @@ get_job_output <- function(job_id, download_directory = tempdir()){
   }
   
   download_url <- content(response,as="parsed")
-  
-  dest_file <- file.path(tempdir(),"output.tar.gz")
-  download.file(download_url, dest_file, quiet=TRUE)
-  files <- untar(dest_file, list = TRUE)
-  untar(dest_file, exdir=download_directory)
-  
-  extracted_folder <- file.path(download_directory, files[[1]])
   destination_folder <- file.path(download_directory, sprintf("job_results_%s",job_id))
-  file.rename(extracted_folder,destination_folder)
+  
+  result <- try({
+  
+    dest_file <- file.path(tempdir(),"output.tar.gz")
+    suppressWarnings({download.file(download_url, dest_file, quiet=TRUE)})
+    files <- untar(dest_file, list = TRUE)
+    untar(dest_file, exdir=download_directory)
+    
+    extracted_folder <- file.path(download_directory, files[[1]])
+    
+    file.rename(extracted_folder,destination_folder)
+    
+  }, silent = TRUE)
+  
+  if(inherits(result,"try-error")){
+    # probably an error, create folder for logs
+    message(sprintf("\njob:%s has no output, getting logs only",job_id))
+    dir.create(destination_folder)
+  }
   
   logs <- get_job_logs(job_id)
   logs_file <- file.path(destination_folder, "logs.txt")
