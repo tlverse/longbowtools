@@ -92,7 +92,7 @@ get_tl_nodes <- function(params_object = NULL){
   
   nodes <- params_object$nodes
   
-  data <- get_tl_data()
+  data <- get_tl_data(params_object=params_object)
   missing_cols <- setdiff(unlist(nodes), colnames(data))
   if(length(missing_cols) > 0){
     stop('Column(s) missing from data: ', missing_cols)
