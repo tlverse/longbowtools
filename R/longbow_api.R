@@ -84,8 +84,7 @@ get_job_status <- function(job_id){
   } else {
     # get vector of statuses for batch job
     statuses <- sapply(resp_data$jobs,`[[`,"status")
-    job_urls <- sapply(resp_data$jobs,`[[`,"results_url")
-    job_ids <- gsub("(/jobs)|(/)","",job_urls)
+    job_ids <- sapply(resp_data$jobs,`[[`,"id")
     names(statuses) <- job_ids
   }
 
