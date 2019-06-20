@@ -108,7 +108,7 @@ get_job_output <- function(job_id, download_directory = tempdir()){
   result <- try({
   
     dest_file <- file.path(tempdir(),"output.tar.gz")
-    suppressWarnings({download.file(download_url, dest_file, quiet=TRUE, method="curl")})
+    suppressWarnings({download.file(download_url, dest_file, quiet=TRUE, mode="wb")})
     files <- untar(dest_file, list = TRUE)
     untar(dest_file, exdir=download_directory)
     
