@@ -118,16 +118,21 @@ get_job_output <- function(job_id, download_directory = tempdir()){
     
   }, silent = TRUE)
   
-  if(inherits(result,"try-error")){
+  if(inherits(result,"try-error") || !(file.exists(destination_folder))){
     # probably an error, create folder for logs
-    message(sprintf("\njob:%s has no output, getting logs only",job_id))
-    dir.create(destination_folder)
+    message(sprintf("\njob:%s failed to download results, getting logs only",job_id))
+    dir.create(destination_folder, showWarnings=FALSE)
   }
   
+  result <- try({
   logs <- get_job_logs(job_id)
   logs_file <- file.path(destination_folder, "logs.txt")
   writeLines(logs, logs_file)
+  })
   
+  if(inherits(result,"try-error")){
+    "\njob:%s failed to download logs"
+  }
   return(destination_folder)
 }
 
