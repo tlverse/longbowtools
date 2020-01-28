@@ -4,13 +4,13 @@
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom httr POST add_headers
 #' @importFrom utils browseURL
-run_on_longbow <- function(rmd_filename, params_filename, open_result = TRUE, provision = TRUE){
+run_on_longbow <- function(rmd_filename, params_filename, open_result = TRUE, provision = TRUE, backend = "ghap"){
   submit_url <-  sprintf("%s/submit_job_token/",getOption("longbowtools.longbow.base.url"))
   yaml_header <- yaml_front_matter(rmd_filename)
   r_packages <- yaml_header$required_packages
   payload <- list(ghap_credentials = cluster_credentials(),
                   inputs = fromJSON(params_filename),
-                  backend = "ghap",
+                  backend = backend,
                   code = paste(readLines(rmd_filename), collapse="\n"),
                   r_packages = r_packages)
   
